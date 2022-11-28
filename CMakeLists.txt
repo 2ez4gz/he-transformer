@@ -252,8 +252,24 @@ set(INSTALL_LIB_DIRS
 set(INSTALL_INCLUDE_DIRS ${EXTERNAL_INSTALL_INCLUDE_DIR}
                          ${NGRAPH_HE_INSTALL_INCLUDE})
 
-include(cmake/gtest.cmake)
-include(cmake/json.cmake)
+                         
+find_package(GTest REQUIRED)
+if(GTest_FOUND)
+    include_directories(${GTEST_INCLUDE_DIRS})
+    
+    MESSAGE( STATUS "GTEST_INCLUDE_DIRS = ${GTEST_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "GTEST_LIBRARIES = ${GTEST_LIBRARIES}.")
+    MESSAGE( STATUS "GTEST_LIB_VERSION = ${GTEST_LIB_VERSION}.")
+endif()
+
+find_package(nlohmann_json REQUIRED)
+if(nlohmann_json_FOUND)
+    include_directories(${nlohmann_json_INCLUDE_DIRS})
+    
+    MESSAGE( STATUS "nlohmann_json_INCLUDE_DIRS = ${nlohmann_json_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "nlohmann_json_LIBRARIES = ${nlohmann_json_LIBRARIES}.")
+    MESSAGE( STATUS "nlohmann_json_LIB_VERSION = ${nlohmann_json_LIB_VERSION}.")
+endif()
 
 if (NGRAPH_HE_PARALLEL)
   include(cmake/openmp.cmake)
@@ -261,10 +277,35 @@ else ()
   add_compile_options(-Wno-source-uses-openmp)
 endif()
 
-include(cmake/seal.cmake)
-include(cmake/abseil.cmake)
-include(cmake/boost.cmake)
-include(cmake/protobuf.cmake)
+find_package(SEAL 4 required)
+if(SEAL_FOUND)
+    include_directories(${SEAL_INCLUDE_DIRS})
+    
+    MESSAGE( STATUS "SEAL_INCLUDE_DIRS = ${SEAL_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "SEAL_LIBRARIES = ${SEAL_LIBRARIES}.")
+    MESSAGE( STATUS "SEAL_LIB_VERSION = ${SEAL_LIB_VERSION}.")
+endif()
+
+find_package(Boost required)
+if(BOOST_FOUND)
+    include_directories(${BOOST_INCLUDE_DIRS})
+    
+    MESSAGE( STATUS "BOOST_INCLUDE_DIRS = ${BOOST_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "BOOST_LIBRARIES = ${BOOST_LIBRARIES}.")
+    MESSAGE( STATUS "BOOST_LIB_VERSION = ${BOOST_LIB_VERSION}.")
+endif()
+
+find_package(absl REQUIRED)
+if(ABSL_FOUND)
+    include_directories(${ABSL_INCLUDE_DIRS})
+    
+    MESSAGE( STATUS "ABSL_INCLUDE_DIRS = ${ABSL_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "ABSL_LIBRARIES = ${ABSL_LIBRARIES}.")
+    MESSAGE( STATUS "ABSL_LIB_VERSION = ${ABSL_LIB_VERSION}.")
+endif()
+
+find_package(Protobuf REQUIRED)
+
 if (NGRAPH_HE_ABY_ENABLE)
   include(cmake/aby.cmake)
 endif()
