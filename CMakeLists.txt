@@ -83,7 +83,7 @@ add_definitions(-DPROJECT_ROOT_DIR="${PROJECT_ROOT_DIR}")
 # he-transformer headers
 set(HE_TRANSFORMER_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-# External projects (ngraph, seal, etc. )
+# External projects (ngraph, etc. )
 set(EXTERNAL_INSTALL_DIR ${CMAKE_BINARY_DIR}/external)
 set(EXTERNAL_INSTALL_LIB_DIR ${EXTERNAL_INSTALL_DIR}/lib)
 set(EXTERNAL_INSTALL_INCLUDE_DIR ${EXTERNAL_INSTALL_DIR}/include)
@@ -255,13 +255,14 @@ set(INSTALL_INCLUDE_DIRS ${EXTERNAL_INSTALL_INCLUDE_DIR}
                          
 find_package(GTest REQUIRED)
 if(GTest_FOUND)
-    include_directories(${GTEST_INCLUDE_DIRS})
+    include_directories(${GTest_INCLUDE_DIRS})
     
-    MESSAGE( STATUS "GTEST_INCLUDE_DIRS = ${GTEST_INCLUDE_DIRS}.")
-    MESSAGE( STATUS "GTEST_LIBRARIES = ${GTEST_LIBRARIES}.")
-    MESSAGE( STATUS "GTEST_LIB_VERSION = ${GTEST_LIB_VERSION}.")
+    MESSAGE( STATUS "GTest_INCLUDE_DIRS = ${GTest_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "GTest_LIBRARIES = ${GTest_LIBRARIES}.")
+    MESSAGE( STATUS "GTest_LIB_VERSION = ${GTest_LIB_VERSION}.")
 endif()
 
+# found
 find_package(nlohmann_json REQUIRED)
 if(nlohmann_json_FOUND)
     include_directories(${nlohmann_json_INCLUDE_DIRS})
@@ -276,35 +277,38 @@ if (NGRAPH_HE_PARALLEL)
 else ()
   add_compile_options(-Wno-source-uses-openmp)
 endif()
+# found
+find_package(ZLIB REQUIRED)
+# found
+find_package(SEAL 4 REQUIRED)
 
-find_package(SEAL 4 required)
-if(SEAL_FOUND)
-    include_directories(${SEAL_INCLUDE_DIRS})
+find_package(Boost REQUIRED)
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
     
-    MESSAGE( STATUS "SEAL_INCLUDE_DIRS = ${SEAL_INCLUDE_DIRS}.")
-    MESSAGE( STATUS "SEAL_LIBRARIES = ${SEAL_LIBRARIES}.")
-    MESSAGE( STATUS "SEAL_LIB_VERSION = ${SEAL_LIB_VERSION}.")
-endif()
-
-find_package(Boost required)
-if(BOOST_FOUND)
-    include_directories(${BOOST_INCLUDE_DIRS})
-    
-    MESSAGE( STATUS "BOOST_INCLUDE_DIRS = ${BOOST_INCLUDE_DIRS}.")
-    MESSAGE( STATUS "BOOST_LIBRARIES = ${BOOST_LIBRARIES}.")
-    MESSAGE( STATUS "BOOST_LIB_VERSION = ${BOOST_LIB_VERSION}.")
+    MESSAGE( STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}.")
+    MESSAGE( STATUS "Boost_LIB_VERSION = ${Boost_LIB_VERSION}.")
 endif()
 
 find_package(absl REQUIRED)
-if(ABSL_FOUND)
+if(absl_FOUND)
     include_directories(${ABSL_INCLUDE_DIRS})
     
-    MESSAGE( STATUS "ABSL_INCLUDE_DIRS = ${ABSL_INCLUDE_DIRS}.")
-    MESSAGE( STATUS "ABSL_LIBRARIES = ${ABSL_LIBRARIES}.")
-    MESSAGE( STATUS "ABSL_LIB_VERSION = ${ABSL_LIB_VERSION}.")
+    MESSAGE( STATUS "absl_INCLUDE_DIRS = ${absl_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "absl_LIBRARIES = ${absl_LIBRARIES}.")
+    MESSAGE( STATUS "absl_LIB_VERSION = ${absl_LIB_VERSION}.")
 endif()
 
+# found
 find_package(Protobuf REQUIRED)
+if(Protobuf_FOUND)
+    include_directories(${Protobuf_INCLUDE_DIRS})
+    
+    MESSAGE( STATUS "Protobuf_INCLUDE_DIRS = ${Protobuf_INCLUDE_DIRS}.")
+    MESSAGE( STATUS "Protobuf_LIBRARIES = ${Protobuf_LIBRARIES}.")
+    MESSAGE( STATUS "Protobuf_VERSION = ${Protobuf_VERSION}.")
+endif()
 
 if (NGRAPH_HE_ABY_ENABLE)
   include(cmake/aby.cmake)

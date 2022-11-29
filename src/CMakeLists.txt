@@ -79,12 +79,12 @@ add_library(he_seal_backend SHARED ${HE_SRC})
 target_include_directories(he_seal_backend PUBLIC ${HE_TRANSFORMER_SOURCE_DIR})
 
 target_link_libraries(he_seal_backend
-                      PUBLIC libjson
-                             libboost
-                             libseal
-                             zlib
+                      PUBLIC nlohmann_json::nlohmann_json
+                             Boost::iostreams
+                             SEAL::seal
+                             ZLIB::ZLIB
                              libngraph
-                             libabseil
+                             absl::inlined_vector
                              protobuf::libprotobuf
                              generated_pb_files
                              )
